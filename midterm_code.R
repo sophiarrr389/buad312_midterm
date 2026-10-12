@@ -171,9 +171,10 @@ summary(model2)
 
 #####
 # 4. Genre interaction and model comparison
-# Contributed by: [your name]
+# Contributed by: Sophia Lu
 
 # Model 3: allow the explicit coefficient to differ by genre.
+# Does the relationship between explicit lyrics and streams differ across genres?
 model3 <- lm(log_streams~explicit*genres+log_followers+
                artist_popularity+duration_min+release_period+release_size+
                empty_markets+danceability+energy+valence+acousticness+
@@ -181,24 +182,20 @@ model3 <- lm(log_streams~explicit*genres+log_followers+
              data=tracks_model)
 summary(model3)
 
-# Compare R-squared and adjusted R-squared on the same outcome and rows.
-model_comparison <- data.frame(
-  model=c("1: Explicit only", "2: Controls", "3: Genre interaction"),
-  n=c(nobs(model1), nobs(model2), nobs(model3)),
-  r_squared=c(summary(model1)$r.squared,
-              summary(model2)$r.squared,
-              summary(model3)$r.squared),
-  adjusted_r_squared=c(summary(model1)$adj.r.squared,
-                       summary(model2)$adj.r.squared,
-                       summary(model3)$adj.r.squared))
-model_comparison
+
+# Does Model 3 improve R^2 and adjusted R^2?
+# Compare R-squared across all three models.
+summary(model1)$r.squared
+summary(model2)$r.squared
+summary(model3)$r.squared
+# Compare adjusted R-squared across all three models.
+summary(model1)$adj.r.squared
+summary(model2)$adj.r.squared
+summary(model3)$adj.r.squared
+
 
 # Test the genre interaction terms together.
 anova(model2, model3)
-
-# Use the interaction model for the remaining checks.
-# Choose the presentation model after reviewing comparisons and diagnostics.
-model_check <- model3
 
 #####
 # 5. Explicit versus non-explicit comparisons within each genre
